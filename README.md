@@ -19,7 +19,7 @@ This repository contains the official Pytorch implementation of training & evalu
 <a href="mmseg/models/necks/fpnt.py#L45"> :keyboard: Code Snippet _(FPNT)_</a>|
 <a href="https://arxiv.org/abs/2111.13280"> :scroll: Paper</a> | 
 <a href="https://tongtianta.site/paper/100450">论文</a> |
-<a href="https://youtu.be/K83b5WRJ3tM"> : movie_camera: video</a>
+<a href="https://youtu.be/K83b5WRJ3tM"> :movie_camera: video</a>
 # :hammer: Installation
 ### Conda environment
 - Clone this repository and enter it: ` git clone git@github.com:WalBouss/SenFormer.git && cd SenFormer`.
