@@ -274,3 +274,86 @@ class SenFormer(BaseDecodeHead):
         loss['loss_seg'] = loss_extra
         loss['acc_seg'] = accuracy(ensemble_pred, seg_label)
         return loss
+
+
+@HEADS.register_module()
+class SenFormerNWS(BaseDecodeHead):
+    '''
+    SenFormer with No Weight Sharing (NWS)
+    '''
+    def __init__(self, feature_strides, num_heads, branch_depth, mlp_ratio=4., qkv_bias=True, qk_scale=None, drop=0.,
+                 attn_drop=0., drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, eps=1.e-15, **kwargs):
+        super(SenFormer, self).__init__(
+            input_transform='multiple_select', **kwargs)
+        assert len(feature_strides) == len(self.in_channels)
+        assert min(feature_strides) == feature_strides[0]
+        self.feature_strides = feature_strides
+        self.eps = eps
+
+        self.learners = nn.ModuleList()
+        for i in range(len(feature_strides)):
+            self.learners.append(
+                TransformerLearner(dim=self.in_channels[i],
+                                 num_heads=num_heads,
+                                 num_queries=self.num_classes,
+                                 branch_depth=branch_depth,
+                                 mlp_ratio=mlp_ratio,
+                                 qkv_bias=qkv_bias,
+                                 qk_scale=qk_scale,
+                                 drop=drop,
+                                 attn_drop=attn_drop,
+                                 drop_path=drop_path,
+                                 act_layer=act_layer,
+                                 norm_layer=norm_layer)
+            )
+
+    def forward(self, inputs):
+        x = self._transform_inputs(inputs)
+        # -------
+        prob_outputs = [] # save probabilty maps for ensemble prediction
+        logit_outputs = [] # save logits for learners' supervision
+        for i in range(0, len(self.feature_strides)):
+            # learner prediction
+            learner_pred = self.learners[i](x[i])
+            learner_pred = resize(learner_pred, size=x[0].shape[2:], mode='bilinear', align_corners=self.align_corners)
+            # -------
+            logit_outputs.append(learner_pred)
+            prob_outputs.append(F.softmax(learner_pred, dim=1))
+
+        # Ensemble prediction
+        ensemble_pred = torch.stack(prob_outputs, dim=0).sum(dim=0)
+
+        return logit_outputs, ensemble_pred
+
+    def forward_test(self, inputs, img_metas, test_cfg):
+        _, ensemble_pred = self.forward(inputs)
+        return ensemble_pred
+
+    @force_fp32(apply_to=('seg_logit',))
+    def losses(self, seg_logit, seg_label):
+        """Compute segmentation loss."""
+        logit_outputs, ensemble_pred = seg_logit # unpack
+
+        # Upscale outputs to the ground truth size
+        ## Ensemble predicition
+        ensemble_pred = torch.log(torch.clamp(ensemble_pred, min=self.eps))
+        ensemble_pred =  resize(input=ensemble_pred, size=seg_label.shape[2:], mode='bilinear', align_corners=self.align_corners)
+        ## Learners predicitions
+        seg_log_logit = [resize(input=logit_outputs[i], size=seg_label.shape[2:], mode='bilinear', align_corners=self.align_corners)
+                         for i in range(len(logit_outputs))]
+
+        seg_label = seg_label.squeeze(1)
+        # Losses
+        loss = dict()
+        ## Loss for the ensemble prediction
+        loss_classic = F.cross_entropy(ensemble_pred, seg_label, ignore_index=self.ignore_index)
+        ## Loss for each learner
+        losses_seg = [F.cross_entropy(seg_log_logit[i], seg_label, ignore_index=self.ignore_index) for i in
+                      range(len(seg_log_logit))]
+        loss_extra = torch.stack(losses_seg, dim=0).sum()
+        loss_extra = loss_extra / len(seg_log_logit)
+
+        loss['loss_classic'] = loss_classic
+        loss['loss_seg'] = loss_extra
+        loss['acc_seg'] = accuracy(ensemble_pred, seg_label)
+        return loss
