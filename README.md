@@ -11,14 +11,15 @@ by Walid Bousselham, Guillaume Thibault, Lucas Pagano, Archana Machireddy, Joe G
 
 This repository contains the official Pytorch implementation of training & evaluation code and the pretrained models for SenFormer.
 <div align="center">
-  <img src="resources/SenFormer.jpg" width="600"/>
+  <img src="resources/SenFormer_fig.png" width="800"/>
 </div>
 <br />
 
 <a href="mmseg/models/decode_heads/senformer.py#L192">:floppy_disk:Code Snippet _(SenFormer)_</a>| 
 <a href="mmseg/models/necks/fpnt.py#L45"> :keyboard: Code Snippet _(FPNT)_</a>|
 <a href="https://arxiv.org/abs/2111.13280"> :scroll: Paper</a> | 
-<a href="https://tongtianta.site/paper/100450">论文</a>
+<a href="https://tongtianta.site/paper/100450">论文</a> |
+<a href="https://youtu.be/K83b5WRJ3tM"> : movie_camera: video</a>
 # :hammer: Installation
 ### Conda environment
 - Clone this repository and enter it: ` git clone git@github.com:WalBouss/SenFormer.git && cd SenFormer`.
@@ -57,6 +58,7 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
 <table>
   <tr>
     <th>Backbone</th>
+    <th>weight sharing</th>
     <th>mIoU </th>
     <th>mIoU (MS)</th>
     <th>#params</th>
@@ -65,71 +67,126 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
     <th colspan="2">Download</th>
   </tr>
 <tr>
-    <td>ResNet-50</td>
-    <td>44.6</td>
-    <td>45.6</td>
-    <td>144M</td>
-    <td>179G</td>
-    <td>512x512 </td>
+    <td rowspan="2">ResNet-50</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>44.38</td>
+    <td>45.2</td>
+    <td style="font-weight: bold;">55M</td>
+    <td rowspan="2" >179G</td>
+    <td rowspan="2" >512x512 </td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r50_512x512_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_r50_512x512_160k_ade20k.py">config</a></td>
   </tr>
 <tr>
-    <td>ResNet-101</td>
-    <td>46.5</td>
-    <td>47.0</td>
-    <td>163M</td>
-    <td>199G</td>
-    <td>512x512</td>
+    <td style="text-align:center"> :x: </td>
+    <td>44.6</td>
+    <td>45.6</td>
+    <td>144M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r50_512x512_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_r50_512x512_160k_ade20k.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">ResNet-101</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>46.93</td>
+    <td>47.9</td>
+    <td style="font-weight: bold;">79M</td>
+    <td rowspan="2">199G</td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r101_512x512_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_r101_512x512_160k_ade20k.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Tiny</td>
+    <td style="text-align:center"> :x: </td>
+    <td>46.5</td>
+    <td>47.0</td>
+    <td>163M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r101_512x512_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_r101_512x512_160k_ade20k.py">config</a></td>
+  </tr>
+<tr>
+    <td rowspan="2">Swin-Tiny</td>
+    <td style="text-align:center">  :white_check_mark: </td>
     <td>46.0</td>
-    <td>46.4</td>
-    <td>144M</td>
-    <td>179G</td>
-    <td>512x512</td>
+    <td> - </td>
+    <td style="font-weight: bold;">59M</td>
+    <td rowspan="2">179G</td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_swin_tiny_512x512_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_swin_tiny_512x512_160k_ade20k.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Small</td>
+    <td style="text-align:center"> :x: </td>
+    <td>46.0</td>
+    <td>46.4</td>
+    <td>144M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_tiny_512x512_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_swin_tiny_512x512_160k_ade20k.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">Swin-Small</td>
+    <td style="text-align:center"> :white_check_mark: </td>
     <td>49.2</td>
-    <td>50.4</td>
-    <td>165M</td>
-    <td>202G</td>
-    <td>512x512</td>
+    <td> - </td>
+    <td style="font-weight: bold;">81M</td>
+    <td rowspan="2">202G</td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_swin_small_512x512_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_swin_small_512x512_160k_ade20k.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Base</td>
-    <td>51.8</td>
-    <td>53.2</td>
-    <td>204M</td>
-    <td>242G</td>
-    <td>640x640</td>
+    <td style="text-align:center"> :x: </td>
+    <td>49.2</td>
+    <td>50.4</td>
+    <td>165M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_small_512x512_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_swin_small_512x512_160k_ade20k.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">Swin-Base</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>52.2</td>
+    <td> - </td>
+    <td style="font-weight: bold;">120M</td>
+    <td rowspan="2">242G</td>
+    <td rowspan="2">640x640</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_swin_base_640x640_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_swin_base_640x640_160k_ade20k.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Large</td>
+    <td style="text-align:center"> :x: </td>
+    <td>51.8</td>
+    <td>53.2</td>
+    <td>204M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_base_640x640_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_swin_base_640x640_160k_ade20k.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">Swin-Large</td>
+    <td style="text-align:center"> :white_check_mark: </td>
     <td>53.1</td>
-    <td>54.2</td>
-    <td>314M</td>
-    <td>546G</td>
-    <td>640x640</td>
+    <td> - </td>
+    <td style="font-weight: bold;"> 233M </td>
+    <td rowspan="2">546G</td>
+    <td rowspan="2">640x640</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_640x640_ade20k.pth">model</a></td>
     <td><a href="senformer_configs/senformer/ade20k/senformer_fpnt_swin_large_640x640_160k_ade20k.py">config</a></td>
   </tr>
+<tr>
+    <td style="text-align:center"> :x: </td>
+    <td>53.1</td>
+    <td>54.2</td>
+    <td>314M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_large_640x640_ade20k.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/ade20k/senformerNWS_fpnt_swin_large_640x640_160k_ade20k.py">config</a></td>
+</tr>
 </table>
 
 ### COCO-Stuff 10K
 <table>
   <tr>
     <th>Backbone</th>
+    <th>weight sharing</th>
     <th>mIoU </th>
     <th>mIoU (MS)</th>
     <th>#params</th>
@@ -137,38 +194,66 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
     <th colspan="2">Download</th>
   </tr>
 <tr>
-    <td>ResNet-50</td>
-    <td>39.0</td>
-    <td>39.7</td>
-    <td>144M</td>
-    <td>512x512</td>
+    <td rowspan="2">ResNet-50</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>40.0</td>
+    <td>41.3</td>
+    <td style="font-weight: bold;">55M</td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r50_512x512_coco.pth">model</a></td>
     <td><a href="senformer_configs/senformer/coco-stuff10k/senformer_fpnt_r50_512x512_80k_coco.py">config</a></td>
   </tr>
 <tr>
-    <td>ResNet-101</td>
-    <td>39.6</td>
-    <td>40.6</td>
-    <td>163M</td>
-    <td>512x512</td>
+<td style="text-align:center"> :x: </td>
+    <td>39.0</td>
+    <td>39.7</td>
+    <td>144M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r50_512x512_coco.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/coco-stuff10k/senformerNWS_fpnt_r50_512x512_80k_coco.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">ResNet-101</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>41.0 </td>
+    <td>42.1</td>
+    <td style="font-weight: bold;">79M</td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r101_512x512_coco.pth">model</a></td>
     <td><a href="senformer_configs/senformer/coco-stuff10k/senformer_fpnt_r101_512x512_80k_coco.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Large</td>
-    <td>49.1</td>
-    <td>50.1</td>
-    <td>314M</td>
-    <td>512x512</td>
+<td style="text-align:center"> :x: </td>
+    <td>39.6</td>
+    <td>40.6</td>
+    <td>163M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r101_512x512_coco.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/coco-stuff10k/senformerNWS_fpnt_r101_512x512_80k_coco.py">config</a></td>
+</tr>
+<tr>
+    <td rowspan="2">Swin-Large</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>49.8 </td>
+    <td>51.5</td>
+    <td style="font-weight: bold;"> 233M </td>
+    <td rowspan="2">512x512</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_512x512_coco.pth">model</a></td>
     <td><a href="senformer_configs/senformer/coco-stuff10k/senformer_fpnt_swin_large_512x512_80k_coco.py">config</a></td>
   </tr>
+<tr>
+    <td style="text-align:center"> :x: </td>
+    <td>49.1</td>
+    <td>50.1</td>
+    <td>314M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_large_512x512_coco.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/coco-stuff10k/senformerNWS_fpnt_swin_large_512x512_80k_coco.py">config</a></td>
+</tr>
 </table>
 
 ### Pascal Context
 <table>
   <tr>
     <th>Backbone</th>
+    <th>weigth sharing</th>
     <th>mIoU </th>
     <th>mIoU (MS)</th>
     <th>#params</th>
@@ -176,31 +261,58 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
     <th colspan="2">Download</th>
   </tr>
 <tr>
-    <td>ResNet-50</td>
-    <td>53.2</td>
+    <td rowspan="2">ResNet-50</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>53.2 </td>
     <td>54.3</td>
-    <td>144M</td>
-    <td>480x480</td>
+    <td style="font-weight: bold;">55M</td>
+    <td rowspan="2">480x480</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r50_480x480_pascal.pth">model</a></td>
     <td><a href="senformer_configs/senformer/pascal/senformer_fpnt_r50_480x480_40k_pascal.py">config</a></td>
   </tr>
 <tr>
-    <td>ResNet-101</td>
-    <td>55.1</td>
+    <td style="text-align:center"> :x: </td>
+    <td>53.2</td>
+    <td>54.3</td>
+    <td>144M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r50_480x480_pascal.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/pascal/senformerNWS_fpnt_r50_480x480_40k_pascal.py">config</a></td>
+  </tr>
+<tr>
+    <td rowspan="2">ResNet-101</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>54.6</td>
     <td>56.6</td>
-    <td>163M</td>
-    <td>480x480</td>
+    <td style="font-weight: bold;">79M</td>
+    <td rowspan="2">480x480</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r101_480x480_pascal.pth">model</a></td>
     <td><a href="senformer_configs/senformer/pascal/senformer_fpnt_r101_480x480_40k_pascal.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Large</td>
+    <td style="text-align:center"> :x:</td>
+    <td>55.1</td>
+    <td>56.6</td>
+    <td>163M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r101_480x480_pascal.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/pascal/senformerNWS_fpnt_r101_480x480_40k_pascal.py">config</a></td>
+  </tr>
+<tr>
+    <td rowspan="2">Swin-Large</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>63.1</td>
+    <td>64.5</td>
+    <td style="font-weight: bold;"> 233M </td>
+    <td rowspan="2">480x480</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_480x480_pascal.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/pascal/senformer_fpnt_swin_large_480x480_40k_pascal.py">config</a></td>
+  </tr>
+<tr>
+    <td style="text-align:center"> :x: </td>
     <td>62.4</td>
     <td>64.0</td>
     <td>314M</td>
-    <td>480x480</td>
-    <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_480x480_pascal.pth">model</a></td>
-    <td><a href="senformer_configs/senformer/pascal/senformer_fpnt_swin_large_480x480_40k_pascal.py">config</a></td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_large_480x480_pascal.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/pascal/senformerNWS_fpnt_swin_large_480x480_40k_pascal.py">config</a></td>
   </tr>
 </table>
 
@@ -208,6 +320,7 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
 <table>
   <tr>
     <th>Backbone</th>
+    <th>weight sharing</th>
     <th>mIoU </th>
     <th>mIoU (MS)</th>
     <th>#params</th>
@@ -215,31 +328,58 @@ SenFormer models with ResNet and Swin's backbones and ADE20K, COCO-Stuff 10K, Pa
     <th colspan="2">Download</th>
   </tr>
 <tr>
-    <td>ResNet-50</td>
+    <td rowspan="2">ResNet-50</td>
+    <td style="text-align:center"> :white_check_mark: </td>
     <td>78.8</td>
     <td>80.1</td>
-    <td>144M</td>
-    <td>512x1024</td>
-    <td><a href="https://archive.org/download/senformer_weights/senformer_r101_512x1024_cityscapes.pth">model</a></td>
+    <td style="font-weight: bold;">55M</td>
+    <td rowspan="2">512x1024</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformer_r50_512x1024_cityscapes.pth">model</a></td>
     <td><a href="senformer_configs/senformer/cityscapes/senformer_fpnt_r50_512x1024_100k_cityscapes.py">config</a></td>
   </tr>
 <tr>
-    <td>ResNet-101</td>
-    <td>80.3</td>
+    <td style="text-align:center"> :x: </td>
+    <td>78.8</td>
+    <td>80.1</td>
+    <td>144M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r50_512x1024_cityscapes.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/cityscapes/senformerNWS_fpnt_r50_512x1024_100k_cityscapes.py">config</a></td>
+  </tr>
+<tr>
+    <td rowspan="2">ResNet-101</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>79.9</td>
     <td>81.4</td>
-    <td>163M</td>
-    <td>512x1024</td>
+    <td style="font-weight: bold;">79M</td>
+    <td rowspan="2">512x1024</td>
     <td><a href="https://archive.org/download/senformer_weights/senformer_r101_512x1024_cityscapes.pth">model</a></td>
     <td><a href="senformer_configs/senformer/cityscapes/senformer_fpnt_r101_512x1024_100k_cityscapes.py">config</a></td>
   </tr>
 <tr>
-    <td>Swin-Large</td>
+    <td style="text-align:center"> :x: </td>
+    <td>80.3</td>
+    <td>81.4</td>
+    <td>163M</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_r101_512x1024_cityscapes.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/cityscapes/senformerNWS_fpnt_r101_512x1024_100k_cityscapes.py">config</a></td>
+  </tr>
+<tr>
+    <td rowspan="2">Swin-Large</td>
+    <td style="text-align:center"> :white_check_mark: </td>
+    <td>82.8</td>
+    <td>84.0</td>
+    <td style="font-weight: bold;"> 233M </td>
+    <td rowspan="2">512x1024</td>
+    <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_512x1024_cityscapes.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/cityscapes/senformer_fpnt_swin_large_512x1024_100k_cityscapes.py">config</a></td>
+  </tr>
+<tr>
+    <td style="text-align:center"> :x: </td>
     <td>82.2</td>
     <td>83.3</td>
     <td>314M</td>
-    <td>512x1024</td>
-    <td><a href="https://archive.org/download/senformer_weights/senformer_swin_large_512x1024_cityscapes.pth">model</a></td>
-    <td><a href="senformer_configs/senformer/cityscapes/senformer_fpnt_swin_large_512x1024_100k_cityscapes.py">config</a></td>
+    <td><a href="https://archive.org/download/senformer_weights/senformerNWS_swin_large_512x1024_cityscapes.pth">model</a></td>
+    <td><a href="senformer_configs/senformer/cityscapes/senformerNWS_fpnt_swin_large_512x1024_100k_cityscapes.py">config</a></td>
   </tr>
 </table>
 
