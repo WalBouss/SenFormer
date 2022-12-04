@@ -14,7 +14,7 @@ This repository contains the official Pytorch implementation of training & evalu
   <img src="resources/SenFormer_fig.png" width="800"/>
 </div>
 <br />
-
+ 
 <a href="mmseg/models/decode_heads/senformer.py#L192">:floppy_disk:Code Snippet _(SenFormer)_</a>| 
 <a href="mmseg/models/necks/fpnt.py#L45"> :keyboard: Code Snippet _(FPNT)_</a>|
 <a href="https://arxiv.org/abs/2111.13280"> :scroll: Paper</a> | 
